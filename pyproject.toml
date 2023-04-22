@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "file_encryptor"
-version = "0.1.13"
+version = "0.1.17"
 description = ""
 authors = ["Michael Meier <michael_johannes.meier@daimler.com>"]
 readme = "README.md"
