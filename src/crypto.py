@@ -1,11 +1,20 @@
 
 import os
+import pathlib
 from enum import Enum
+import yaml
+
 from loguru import logger
 from cryptography.fernet import Fernet
 
-with open(os.path.join('.', "files_to_encrypt.txt")) as file:
-    FILES_TO_ENCRYPT = [line.rstrip() for line in file]
+
+
+PROJECT_ROOT_FOLDER = os.path.join(pathlib.Path(__file__).parent.parent.parent.parent.parent.parent.absolute())
+
+with open(os.path.join(PROJECT_ROOT_FOLDER, "config.yml")) as stream:
+    config = yaml.safe_load(stream)
+    FILES_TO_ENCRYPT = config["file-encryptor"]["files-to-encrypt"]
+
 
 
 class Mode(Enum):
@@ -15,7 +24,7 @@ class Mode(Enum):
 def init_fernet(key = None):
     if not key:
         logger.info("Using key from file: decrypt.key")
-        with open(os.path.join('decrypt.key'), 'rb') as filekey:
+        with open(os.path.join(PROJECT_ROOT_FOLDER, 'decrypt.key'), 'rb') as filekey:
             key = filekey.read()
     return Fernet(key)
 
@@ -26,7 +35,7 @@ def de_or_encrypt(de_or_encrypt: str, file = None, key = None):
         files_to_encrypt = [file]
     else:
         files_to_encrypt = FILES_TO_ENCRYPT
-    for root, _, filenames in os.walk(os.path.join('.')):
+    for root, _, filenames in os.walk(PROJECT_ROOT_FOLDER):
         for filename in filenames:
             for file_to_encrypt in files_to_encrypt:
                 filepath = os.path.join(root, filename)
@@ -46,7 +55,9 @@ def de_or_encrypt(de_or_encrypt: str, file = None, key = None):
                     encrypted_file.write(de_or_encrypted)
     logger.info(f"Successfully {de_or_encrypt}ed: {count} files")   
 
-def gen_new_key(filepath: str):
+def gen_new_key(filename: str):
     key = Fernet.generate_key()
-    with open(filepath, 'wb') as filekey:
+    file_path = os.path.join(PROJECT_ROOT_FOLDER, "file-encryptor", filename)
+    with open(file_path, 'wb') as filekey:
+      logger.info(f"Saving key to {file_path}")
       filekey.write(key)

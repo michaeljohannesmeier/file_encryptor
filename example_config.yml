@@ -1,0 +1,3 @@
+base-path: C:/Users/MEIEMI/Desktop/repos/ganaderia
+files-to-encrypt:
+ - test.txt

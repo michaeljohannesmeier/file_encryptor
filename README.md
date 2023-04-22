@@ -1,10 +1,12 @@
 # File-encryptor
 
-Encrypts or decrypts all files in the parent directory of this package which are listed in: `files_to_encrypt.txt`.
+Encrypts or decrypts all files specified in: `config.yml`.
 
 ## How to use
 
-- generate a file called `files_to_encrypt.txt` - see `example_files_to_encrypt.txt`
+- place this package into the root folder of your package where you want to use it and install it via poetry
+- generate a file called `config.yml` - see `example_config.yml`
+- specify base path and files which should be encrypted
 - run `poetry install`
 - generate a key for encryption with `poetry run file-encryptor generate-new-key`
 - encrypt all files in parent folder of root folder of this project: `poetry run file-encryptor encrypt`
