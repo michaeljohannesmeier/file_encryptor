@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "file-encryptor"
+name = "file_encryptor"
 version = "0.1.13"
 description = ""
 authors = ["Michael Meier <michael_johannes.meier@daimler.com>"]
